@@ -11,6 +11,50 @@
     </script>
   </head>
   <body style="margin: 0px; overflow: hidden;">
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+  // 🔍 1. Buscar el canvas con id exacto '#canvas'
+  const canvas = document.querySelector('[id="#canvas"]');
+
+  if (!canvas) {
+    console.error("❌ No se encontró el canvas especificado.");
+    return;
+  }
+
+  // 📐 2. Función maestra de redimensión
+  function ajustarAlContenedor() {
+    // Usamos el tamaño del 'window' actual (que en el iframe cambia al activar Fullscreen)
+    const anchoMax = window.innerWidth;
+    const altoMax = window.innerHeight;
+
+    // Asignamos el tamaño real de los píxeles del canvas
+    canvas.width = anchoMax;
+    canvas.height = altoMax;
+
+    // 🎨 Opcional: Asegurar por estilo que use el 100% visible
+    canvas.style.width = "100vw";
+    canvas.style.height = "100vh";
+
+    console.log(`🚀 Canvas redimensionado en iframe: ${canvas.width}x${canvas.height}`);
+    
+    // 💡 RECUERDA: Si tienes un loop de renderizado (requestAnimationFrame), 
+    // se adaptará al instante. Si es dibujo estático, redibuja aquí.
+  }
+
+  // 🔄 3. Ejecución inicial al cargar
+  ajustarAlContenedor();
+
+  // ⚡ 4. Escuchar cambios de tamaño normales de ventana
+  window.addEventListener("resize", ajustarAlContenedor);
+
+  // 🖥️ 5. Capturar el evento cuando el iframe entra/sale de Pantalla Completa
+  // Se añaden los prefijos webkit para máxima compatibilidad con navegadores viejos
+  document.addEventListener("fullscreenchange", ajustarAlContenedor);
+  document.addEventListener("webkitfullscreenchange", ajustarAlContenedor);
+  document.addEventListener("mozfullscreenchange", ajustarAlContenedor);
+  document.addEventListener("MSFullscreenChange", ajustarAlContenedor);
+});
+    </script>
     <div id="gameContainer" style="width: 800px; height: 400px; margin: auto; position: absolute; left: 50%; top: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);"></div>
   </body>
 </html>
